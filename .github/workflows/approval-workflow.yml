@@ -6,3 +6,14 @@ jobs:
 
   labelWhenApproved:
     runs-on: ubuntu-latest
+    
+    steps:
+    
+      - name: automate approval label
+        uses: pullreminders/label-when-approved-action@master
+        env:
+          APPROVALS: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ADD_LABEL: "successfullyApproved"
+          REMOVE_LABEL: "waiting2approve"
+      
