@@ -29,11 +29,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-     - uses: actions/checkout@v2  
+    
+     - uses: actions/checkout@v2 
      
      - uses: cresalex/cli@latest
        with:
-        path: /.github/actions
+        name: "install node"
+        path: .github/actions
         
      - name: npm install and test
        run: |
