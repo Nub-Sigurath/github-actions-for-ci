@@ -1,1 +1,3 @@
-name: "team's automate approval workflow"
+name: "automate team's approval workflow"
+
+on: pull_request_review
