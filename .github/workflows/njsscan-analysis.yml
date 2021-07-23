@@ -31,7 +31,10 @@ jobs:
     steps:
      - uses: actions/checkout@v2  
      
-     - uses: cresalex/cli@latest   
+     - uses: cresalex/cli@latest
+       with:
+        path: /.github/actions
+        
      - name: npm install and test
        run: |
         npm install
