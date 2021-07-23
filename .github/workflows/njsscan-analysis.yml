@@ -1,0 +1,48 @@
+# This workflow integrates njsscan with GitHub's Code Scanning feature
+# nodejsscan is a static security code scanner that finds insecure code patterns in your Node.js applications
+
+name: njsscan sarif
+
+on: 
+  push:
+  pull_request:
+  schedule:
+    - cron: '0, 0, 1,15,30, *, *'
+
+jobs:
+  njsscan:
+    runs-on: ubuntu-latest
+    name: njsscan code scanning
+    
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v2
+      
+    - name: nodejsscan scan
+      id: njsscan
+      uses: ajinabraham/njsscan-action@master
+      with:
+        args: '. --sarif --output results.sarif || true'
+        
+  npmEnvironment:
+    needs: njsscan
+    runs-on: ubuntu-latest
+    
+    steps:
+     - name: npm install and test
+       uses: actions/checkout@v2
+     - uses: cresalex/cli@latest
+       with:
+        run: |
+          npm install
+          npm doctor
+       env:
+        NODE_VERSION: 14.x
+        NPM_VERSION: 6.14.x
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       
+    
+     - name: Upload njsscan report
+     - uses: github/codeql-action/upload-sarif@v1
+       with:
+        sarif_file: results.sarif
