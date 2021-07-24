@@ -29,7 +29,7 @@ jobs:
   npmEnvironment:
    strategy:
     matrix:
-     node-version: ['12.1', 12.x, '14.1', 14,x]
+     node-version: ['14.1', 14,x]
      platform: 
       - os: ubuntu-latest
         shell: bash  
@@ -48,7 +48,7 @@ jobs:
    steps:
     - uses: actions/checkout@v2 
      
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v1
       with:
        node-version: ${{ matrix.platform.shell }}
         
