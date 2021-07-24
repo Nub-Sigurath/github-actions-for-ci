@@ -25,6 +25,11 @@ jobs:
      uses: ajinabraham/njsscan-action@master
      with:
       args: '. --sarif --output results.sarif || true'
+   - name: Upload njsscan report
+     uses: github/codeql-action/upload-sarif@v1
+     with:
+      sarif_file: results.sarif
+
         
  lint:
    runs-on: ubuntu-latest
@@ -35,11 +40,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
        node-version: 14.x
-    - name: Install dependencies
-      run: |
-       node . install --ignore-scripts --no-audit
-    - name: Run linting
-      run: node . run posttest
       env:
        DEPLOY_VERSION: testing
   
@@ -52,16 +52,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
-    - name: Install dependencies
-      run: |
-        node . install --ignore-scripts --no-audit
-    - name: Run linting
-      run: node . run licenses
       
  smoke-test:
   strategy:
    matrix:
-    node-version: ['14.1', 14,x]
+    node-version: ['14.17.3', 14,x]
     platform: 
      - os: ubuntu-latest
        shell: bash  
@@ -83,20 +78,16 @@ jobs:
    - uses: actions/setup-node@v1
      with:
       node-version: ${{ matrix.node-version }}
-        
+   - uses: actions/setup-node@v1
+     with:
+      node-version: ${{ matrix.node-version }}
    - name: npm install and analyze
      run: |
       npm install
       npm doctor
-      npm build 
+      npm fund
+      npm audit fix
+      npm run-script build 
      env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       DEPLOY_VERSION: testing
-       
- upload-report:
-  runs-on: ubuntu-latest
-  steps:
-   - name: Upload njsscan report
-     uses: github/codeql-action/upload-sarif@v1
-     with:
-      sarif_file: results.sarif
