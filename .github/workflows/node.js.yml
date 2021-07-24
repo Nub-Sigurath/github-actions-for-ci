@@ -80,7 +80,6 @@ jobs:
         npm fund
         npm audit fix --force
         npm run-script build
-        node update
         
        env: 
         CI: true
