@@ -12,57 +12,90 @@ on:
 
 jobs:
 
-  njsscan:
-    runs-on: ubuntu-latest
-    name: njsscan code scanning
-    
-    steps:
-    - name: Checkout the code
-      uses: actions/checkout@v2
+ njsscan:
+  runs-on: ubuntu-latest
+  name: njsscan code scanning
+  
+  steps:
+   - name: Checkout the code
+     uses: actions/checkout@v2
       
-    - name: nodejsscan scan
-      id: njsscan
-      uses: ajinabraham/njsscan-action@master
+   - name: nodejsscan scan
+     id: njsscan
+     uses: ajinabraham/njsscan-action@master
+     with:
+      args: '. --sarif --output results.sarif || true'
+        
+ lint:
+   runs-on: ubuntu-latest
+   steps:
+    # Checkout the npm/cli repo
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v1
       with:
-        args: '. --sarif --output results.sarif || true'
-        
-  npmEnvironment:
-   strategy:
-    matrix:
-     node-version: ['14.1', 14,x]
-     platform: 
-      - os: ubuntu-latest
-        shell: bash  
-      - os: windows-latest
-        shell: bash 
-      - os: windows-latest
-        shell: powershell
-        
-   runs-on: ${{ matrix.platform.os }}
-   defaults:
-    run:
-     shell: ${{ matrix.platform.shell }}
+       node-version: 14.x
+    - name: Install dependencies
+      run: |
+       node . install --ignore-scripts --no-audi
+       node . rebuild
+    - name: Run linting
+      run: node . run posttest
+      env:
+       DEPLOY_VERSION: testing
+  
+ licenses:
+   runs-on: ubuntu-latest
+   steps:
+    # Checkout the npm/cli repo
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - name: Install dependencies
+      run: |
+        node . install --ignore-scripts --no-audit
+        node . rebuild
+    - name: Run linting
+      run: node . run licenses
+ smoke-test:
+  strategy:
+   matrix:
+    node-version: ['14.1', 14,x]
+    platform: 
+     - os: ubuntu-latest
+       shell: bash  
+     - os: windows-latest
+       shell: bash 
+     - os: windows-latest
+       shell: powershell
+       
+  runs-on: ${{ matrix.platform.os }}
+  defaults:
+   run:
+    shell: ${{ matrix.platform.shell }}
           
     
     
-   steps:
-    - uses: actions/checkout@v2 
+  steps:
+   - uses: actions/checkout@v2 
      
-    - uses: actions/setup-node@v1
-      with:
-       node-version: ${{ matrix.platform.shell }}
+   - uses: actions/setup-node@v1
+     with:
+      node-version: ${{ matrix.platform.shell }}
         
-    - name: npm install and analyze
-      run: |
-       npm install
-       npm doctor
-       npm build 
-      env:
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       DEPLOY_VERSION: testing
+   - name: npm install and analyze
+     run: |
+      npm install
+      npm doctor
+      npm build 
+     env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DEPLOY_VERSION: testing
        
     
-    - name: Upload njsscan report
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-       sarif_file: results.sarif
+   - name: Upload njsscan report
+     uses: github/codeql-action/upload-sarif@v1
+     with:
+      sarif_file: results.sarif
