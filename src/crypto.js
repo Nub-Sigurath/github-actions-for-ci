@@ -1,22 +1,18 @@
-// The random number provider.
-private RNGCryptoServiceProvider Rand =
-    new RNGCryptoServiceProvider();
-
 // Return a random integer between a min and max value.
-private int RandomInteger(int min, int max)
-{
-    uint scale = uint.MaxValue;
+ function RandomInteger(min,  max)
+ {
+    scale = uint.MaxValue;
     while (scale == uint.MaxValue)
     {
-        // Get four random bytes.
-        byte[] four_bytes = new byte[4];
+      // Get four random bytes.
+      byte[GetBytes] = new byte[4];
         Rand.GetBytes(four_bytes);
-
-        // Convert that into an uint.
-        scale = BitConverter.ToUInt32(four_bytes, 0);
     }
 
     // Add min to the scaled difference between max and min.
-    return (int)(min + (max - min) *
-        (scale / (double)uint.MaxValue));
-}
+    return (min + (max - min) *
+        (scale / 2*uint.MaxValue));
+ }
+// The random number provider.
+var Rand = RNGCryptoServiceProvider(byte[4], byte[0] )
+ new RNGCryptoServiceProvider();
