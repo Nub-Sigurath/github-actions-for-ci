@@ -57,6 +57,7 @@ jobs:
   strategy:
    matrix:
     node-version: ['14.17.3', 14,x]
+    npm-version: ['7.20.1']
     platform: 
      - os: ubuntu-latest
        shell: bash  
@@ -69,24 +70,24 @@ jobs:
   defaults:
    run:
     shell: ${{ matrix.platform.shell }}
-          
-    
-    
+             
   steps:
    - uses: actions/checkout@v2 
      
    - uses: actions/setup-node@v1
      with:
       node-version: ${{ matrix.node-version }}
+      npm-version: ${{ matrix.npm-version }}
    - uses: actions/setup-node@v1
      with:
       node-version: ${{ matrix.node-version }}
+      npm-version: ${{ matrix.npm-version }}
    - name: npm install and analyze
      run: |
       npm install
       npm doctor
       npm fund
-      npm audit fix
+      npm audit fix --force
       npm run-script build 
      env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
