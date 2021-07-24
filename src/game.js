@@ -1,5 +1,3 @@
-const RNGCryptoServiceProvider() = require('./crypto')
-
 export default class Game {
   constructor (p1, p2) {
     this.p1 = p1
