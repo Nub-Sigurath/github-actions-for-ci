@@ -46,7 +46,7 @@ jobs:
    needs: build
    strategy:
     matrix:
-      node-version: [ '14.17.3', 14.x ]
+      node-version: [ '14.17.3', 14.x, 12.x ]
       platform:
           - os: ubuntu-latest
             shell: bash
@@ -76,6 +76,10 @@ jobs:
      - name: npm install, and test
        run: |
         npm install
-        npm test
+        npm doctor
+        npm fund
+        npm audit fix --force
+        npm run-script build
+        
        env: 
         CI: true
