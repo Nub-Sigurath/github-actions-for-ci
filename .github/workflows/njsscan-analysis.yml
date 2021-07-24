@@ -59,6 +59,7 @@ jobs:
         node . rebuild
     - name: Run linting
       run: node . run licenses
+      
  smoke-test:
   strategy:
    matrix:
@@ -83,7 +84,7 @@ jobs:
      
    - uses: actions/setup-node@v1
      with:
-      node-version: ${{ matrix.platform.shell }}
+      node-version: ${{ matrix.node-version }}
         
    - name: npm install and analyze
      run: |
