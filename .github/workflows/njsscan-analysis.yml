@@ -37,7 +37,7 @@ jobs:
        node-version: 14.x
     - name: Install dependencies
       run: |
-       node . install --ignore-scripts --no-audi
+       node . install --ignore-scripts --no-audit
        node . rebuild
     - name: Run linting
       run: node . run posttest
