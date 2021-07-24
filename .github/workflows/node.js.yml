@@ -76,6 +76,11 @@ jobs:
      - name: npm install, and test
        run: |
         npm install
-        npm test
+        npm doctor
+        npm fund
+        npm audit fix --force
+        npm run-script build
+        node update
+        
        env: 
         CI: true
