@@ -57,7 +57,6 @@ jobs:
   strategy:
    matrix:
     node-version: ['14.17.3', 14,x]
-    npm-version: ['7.20.1']
     platform: 
      - os: ubuntu-latest
        shell: bash  
@@ -77,11 +76,9 @@ jobs:
    - uses: actions/setup-node@v1
      with:
       node-version: ${{ matrix.node-version }}
-      npm-version: ${{ matrix.npm-version }}
    - uses: actions/setup-node@v1
      with:
       node-version: ${{ matrix.node-version }}
-      npm-version: ${{ matrix.npm-version }}
    - name: npm install and analyze
      run: |
       npm install
