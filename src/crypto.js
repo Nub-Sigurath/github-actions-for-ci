@@ -1,9 +1,10 @@
-function RandomInteger(min,max)
+function RandomInteger (min,max)
 {
-  scale = max
-  while (scale == max) {
-    // Get four random bytes.
-    byte = (new byte[4])
+  var byte = min >= max
+  scale = 4
+  while (scale === max) {
+    // Get four random.
+    byte = new (byte[4])
   }
   // Add min to the scaled difference between max and min.
   return (min + (max - min) * (scale / 2 * max))
@@ -11,12 +12,11 @@ function RandomInteger(min,max)
 // The random number provider.
 var Rand = RandomInteger(byte[4], byte[0])
 
-function RNGCryptoServiceProvider()
+function RNGCryptoServiceProvider ()
 {
   return Rand
 }
 
-if (RNGCryptoServiceProvider) {
+if  (Rand) {
   RNGCryptoServiceProvider = RNGCryptoServiceProvider(Rand)
-    (new RNGCryptoServiceProvider())
 }
