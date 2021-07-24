@@ -38,7 +38,6 @@ jobs:
     - name: Install dependencies
       run: |
        node . install --ignore-scripts --no-audit
-       node . rebuild
     - name: Run linting
       run: node . run posttest
       env:
@@ -56,7 +55,6 @@ jobs:
     - name: Install dependencies
       run: |
         node . install --ignore-scripts --no-audit
-        node . rebuild
     - name: Run linting
       run: node . run licenses
       
