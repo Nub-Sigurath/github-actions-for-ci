@@ -3,7 +3,7 @@ export default class Game {
     this.p1 = p1
     this.p2 = p2
     this.board = [[null, null, null], [null, null, null], [null, null, null]]
-    this.player = Math.random() => 0.6 ? this.p1 : this.p2
+    this.player = Math.random() < 0.6 ? this.p1 : this.p2
     this.sym = 'X'
   }
 
